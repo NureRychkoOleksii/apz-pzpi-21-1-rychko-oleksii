@@ -41,6 +41,40 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+            .GetBytes(builder.Configuration.GetSection("Jwt:Secret").Value)),
+    };
+});
+
+builder.Services.AddDbContext<StarOfLifeContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+});
+builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+
+builder.Services.AddScoped<AdminRoleInterceptorAttribute>();
+builder.Services.AddScoped<DoctorRoleInterceptorAttribute>();
+builder.Services.AddScoped<SensorRoleInterceptorAttribute>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IBackupService, BackupService>();
+builder.Services.AddScoped<INewbornService, NewbornService>();
+builder.Services.AddScoped<IParentService, ParentService>();
+builder.Services.AddScoped<ISensorService, SensorService>();
+builder.Services.AddScoped<ISensorSettingsService, SensorSettingsService>();
+builder.Services.AddScoped<IMedicalDataService, MedicalDataService>();
+builder.Services.AddScoped<IAnalysisService, AnalysisService>();
+builder.Services.AddScoped<IAlertService, AlertService>();
+builder.Services.AddScoped<ISensorDataService, SensorDataService>();
 
 var app = builder.Build();
 
@@ -55,5 +89,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<JwtMiddleware>();
 
 app.Run();
