@@ -1,0 +1,276 @@
+1 МОДЕЛЮВАННЯ ПРОГРАМНОЇ СИСТЕМИ
+
+Система "Star of Life" включає в себе три типи користувачів: клієнт, адміністратор та зовнішні пристрої. Кожна група користувачів використовує веб-інтерфейс і мобільний застосунок для взаємодії з системою. Веб-інтерфейс дозволяє адміністраторам ефективно керувати мережею, медичному персоналу - отримувати доступ до медичної інформації. Мобільний застосунок полегшує взаємодію між батьками та системою. IoT-прилади використовуються для збору даних і покращення функціональності системи.
+Основними потребами клієнтів є: перегляд медичних даних дитини, збереження медичних аналізів дитини, можливість аналізу медичних даних дитини, можливість виявити можливі захворювання або критичний стан новородженого, можливість отримання сповіщення щодо зміни стану або критичного стану дитини, отримання статистики даних з датчиків, зміна своїх даних та даних дитини.
+Основними потребами адміністратора є: можливість перегляду та створення, редагування користувачів системи, можливість створення датчиків в системі, можливість налаштування датчиків в системі, можливість створення, редагування та видалення аналізів дитини, можливість створення резервних копій даних системи та їхній імпорт в систему.
+Взаємодію кожної ролі користувачів з системою представлено на діаграмі прецедентів (див. додат. А.1).
+ 
+2 ПРОЄКТУВАННЯ БАЗИ ДАНИХ
+
+Для проєктування бази даних було розроблено ER-модель даних (див. рис. 1). Вона складається з 8 таблиць: користувачі, новонароджені, батьки, датчики, аналізи, медичні дані, сповіщення та налаштування датчиків.
+ 
+	На діаграмі можна побачити такі зв’язки:
+	−	Користувач –> Новонароджений. Один до багатьох. Кожен користувач може мати багато новонароджених, але кожен новонароджений пов'язаний лише з одним користувачем.
+	−	Користувач –> Батько. Один до багатьох. Кожен користувач може мати багато батьків, але кожен батько пов'язаний лише з одним користувачем.
+	−	Новонароджений –> Батько. Багато до багатьох. Кожен новонароджений може мати багато батьків, а також кожен батько може мати багато новонароджених. Цей зв'язок представлений через проміжну таблицю UserParent.
+	−	Датчик –> Налаштування датчика. Один до одного. Кожен датчик має лише один набір налаштувань, а також кожні налаштування датчика пов'язані лише з одним датчиком.
+	−	Датчик –> Запис медичних даних. Один до багатьох. Кожен датчик може мати багато записів медичних даних, але кожен запис медичних даних пов'язаний лише з одним датчиком.
+	−	Датчик –> Запис медичних даних. Один до багатьох. Кожен датчик може мати багато записів медичних даних, але кожен запис медичних даних пов'язаний лише з одним датчиком.
+	−	Новонароджений –> Аналіз. Один до багатьох. Кожен новонароджений може мати багато аналізів, але кожен аналіз пов'язаний лише з одним новонародженим.
+	−	Датчик –> Сповіщення. Один до багатьох. Кожен датчик може мати багато сповіщень, але кожне сповіщення пов'язане лише з одним датчиком.
+ 
+3 ТЕХНОЛОГІЇ ТА АРХІТЕКТУРНІ РІШЕННЯ
+
+Для написання серверної частини системи було обрано мову програмування C# з використанням технології ASP.NET Core Web API, дозволяючи писати швидкий та продуктивний код.
+У якості бази даних використано PostgreSQL, до якої здійснюється доступ з серверного застосунку за допомогою технології Entity Framework Core, дуже зручної бібліотеки, яка дозволяє мати взаємодію з базою даних через об’єкти. 
+Для більш детальної візуалізації використаних технологій було розроблено діаграму розгортання (див. рис. 2).
+Для демонстрації та тестування API використовується OpenApi Swagger, зручний інструмент для перегляду та тестування API, покращує якість та зручність розробки. Для забезпечення безпеки даних та конфіденційності використовується захищений протокол HTTPS, який захищає дані під час їх передачі.
+Для шифрування паролів та створення токенів авторизації використовується бібліотека System.Security.Cryptography для хешування паролів та JWT (Json Web Tokens) для створення токенів, що створює потужний та безпечний механізм управління доступом користувачів. Для передачі та отримання даних використовується принцип REST API.
+Для маршрутизації запитів система використовує API контролери. Вони розбивають програму на логічні компоненти, кожен з яких відповідає за обробку певного типу запитів або користувацьких дій. Це спрощує управління кодом та дозволяє легко розширювати функціональність.
+Розроблений серверний застосунок побудований за принципами трьох-шарової архітектури, яка складається з: Core, Abstraction, Services та Controllers.
+В архітектуру також були додані інтерцептори (Interceptors), які перехоплюють запити та можуть їх блокувати, не допускаючи непідходящі по різним причинам запити до контролера. Система використовує три інтерцептори: AdminRoleInterceptor, DoctorRoleInterceptor та SensorRoleInterceptor. Також, використовуюється інтерцептор Authorize. Архітектура серверного застосунку представлена на діаграмі пакетів (див. додаток Б рис. Б.1).
+ 
+4 СПЕЦИФІКАЦІЯ REST
+
+REST API в даному проекті складається із 42 кінцевих точок. Кожна кінцева точка відповідає за надання даних користувачеві та виконання бізнес логіки.
+Специфікація кожного ендпоінту наведена у виді таблиці (див. таб. 1).
+
+GetAlerts	GET	/api/Alert
+GetAlert	GET	/api/Alert/{id}
+GetAlertByUser	GET	/api/Alert/patient/{id}
+CreateAlert	POST	/api/Alert
+UpdateAlert	PUT	/api/Alert/{id}
+DeleteAlert	DELETE	/api/Alert/{id}
+GetAnalyses	GET	/api/Analysis
+GetAnalysis	GET	/api/Analysis/{id}
+CreateAnalysis	POST	/api/Analysis
+UpdateAnalysis	PUT	/api/Analysis/{id}
+DeleteAnalysis	DELETE	/api/Analysis/{id}
+SaveToCsv	POST	/api/Backup/save
+RestoreFromCsv	POST	/api/Backup/restore
+DownloadAsZip	POST	/api/Backup/download
+GetMedicalData	GET	/api/MedicalData
+GetMedicalData	GET	/api/MedicalData/{id}
+CreateMedicalData	POST	/api/MedicalData
+UpdateMedicalData	PUT	/api/MedicalData/{id}
+DeleteMedicalData	DELETE	/api/MedicalData/{id}
+GetNewborns	GET	/api/Newborn
+GetNewborn	GET	/api/Newborn/{id}
+CreateNewborn	POST	/api/Newborn
+UpdateNewborn	PUT	/api/Newborn/{id}
+DeleteNewborn	DELETE	/api/Newborn/{id}
+GetNewbornData	GET	/api/Newborn/data/{id}
+GetParents	GET	/api/Parent
+GetParent	GET	/api/Parent/{id}
+CreateParent	POST	/api/Parent
+CreateParentWithNewborn	POST	/api/Parent/withNewborn
+UpdateParent	PUT	/api/Parent/{id}
+DeleteParent	DELETE	/api/Parent/{id}
+GetNewborns	GET	/api/Parent/newborns/{id}
+GetSensors	GET	/api/Sensor
+GetSensor	GET	/api/Sensor/{id}
+CreateSensor	POST	/api/Sensor
+UpdateSensor	PUT	/api/Sensor/{id}
+DeleteSensor	DELETE	/api/Sensor/{id}
+GetAverageSensorData	GET	/api/SensorData/average
+GetSensorSettings	GET	/api/SensorSettings
+GetSensorSettings	GET	/api/SensorSettings/{id}
+CreateSensorSettings	POST	/api/SensorSettings
+UpdateSensorSettings	PUT	/api/SensorSettings/{id}
+DeleteSensorSettings	DELETE	/api/SensorSettings/{id}
+GetUsers	GET	/api/User
+GetUser	GET	/api/User/{id}
+CreateUser	POST	/api/User
+UpdateUser	PUT	/api/User/{id}
+DeleteUser	DELETE	/api/User/{id}
+Login	POST	/api/User/login
+SignUp	POST	/api/User/signup
+
+ВИСНОВКИ
+
+У ході виконання лабораторної роботи були отримані навички з проєктування серверної частини програмної системи, розробки сценаріїв використання, діаграм розгортання та пакетів, проєктуванні бази даних. Була розроблена програмна реалізація серверної частини програмної системи за допомогою мови програмування C#.
+
+ДОДАТОК В
+
+SensorDataService.cs
+1	public class SensorDataService : ISensorDataService
+2	{
+3	    private readonly StarOfLifeContext _context;
+4	
+5	    public SensorDataService(StarOfLifeContext context)
+6	    {
+7	        _context = context;
+8	    }
+9	
+10	    public async Task<Dictionary<SensorType, double>> GetAverageSensorDataAsync()
+11	    {
+12	        var medicalDatas = await _context.MedicalDatas
+13	            .Include(md => md.Sensor)
+14	            .ToListAsync();
+15	        
+16	        var averageData = new Dictionary<SensorType, double>();
+17	        var count = new Dictionary<SensorType, int>();
+18	
+19	        foreach (var medicalData in medicalDatas)
+20	        {
+21	            var sensorType = medicalData.Sensor.SensorType;
+22	            
+23	            if (!averageData.ContainsKey(sensorType))
+24	            {
+25	                averageData[sensorType] = 0;
+26	                count[sensorType] = 0;
+27	            }
+28	
+29	            averageData[sensorType] += medicalData.SensorData;
+30	            count[sensorType]++;
+31	        }
+32	
+33	        foreach (var sensorType in averageData.Keys.ToList())
+34	        {
+35	            if (count.TryGetValue(sensorType, out var sensorCount) && sensorCount > 0)
+36	            {
+37	                averageData[sensorType] /= sensorCount;
+38	            }
+39	        }
+40	
+41	        return averageData;
+42	    }
+43	}
+
+ДОДАТОК Г
+
+JwtService.cs
+1	public class JwtService: IJwtService
+2	{
+3	    private readonly IConfiguration _configuration;
+4	
+5	    public JwtService(IConfiguration configuration)
+6	    {
+7	        _configuration = configuration;
+8	    }
+9	
+10	    public string GenerateToken(int userId, Role role)
+11	    {
+12	        var claims = new List<Claim>
+13	        {
+14	            new (ClaimTypes.NameIdentifier, userId.ToString()),
+15	            new (ClaimTypes.Role, role.ToString())
+16	        };
+17	
+18	        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+19	            _configuration.GetSection("Jwt:Secret").Value));
+20	        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+21	        var token = new JwtSecurityToken(
+22	            claims: claims,
+23	            expires: DateTime.Now.AddDays(1),
+24	            signingCredentials: credentials);
+25	
+26	        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+27	        return jwt;
+28	    }
+29	}
+
+ 
+ДОДАТОК Д
+
+BackupService.cs
+1	public class BackupService: IBackupService
+2	{
+3	    private readonly StarOfLifeContext _context;
+4	
+5	    public BackupService(StarOfLifeContext context)
+6	    {
+7	        _context = context;
+8	    }
+9	
+10	    public async Task SaveToCsv(string directoryPath)
+11	    {
+12	        Directory.CreateDirectory(directoryPath);
+13	        var entityTypes = _context.Model.GetEntityTypes();
+14	
+15	        foreach (var entityType in entityTypes)
+16	        {
+17	            var entityName = entityType.ClrType.Name;
+18	            var filePath = Path.Combine(directoryPath, $"{entityName}.csv");
+19	            
+20	            var dbSetProperty = _context.GetType().GetProperty(entityName + "s");
+21	            if (dbSetProperty == null) continue;
+22	            
+23	            var dbSet = dbSetProperty.GetValue(_context);
+24	            var queryable = dbSet as IQueryable<object>;
+25	            if (queryable == null) return;
+26	
+27	            var entities = await queryable.ToListAsync();
+28	
+29	            using var writer = new StreamWriter(filePath);
+30	            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+31	            await csv.WriteRecordsAsync(entities);
+32	        }
+33	    }
+34	
+35	    public async Task RestoreFromCsv(string directoryPath)
+36	    {
+37	        var entityTypes = _context.Model.GetEntityTypes();
+38	
+39	        foreach (var entityType in entityTypes)
+40	        {
+41	            var entityName = entityType.ClrType.Name;
+42	            var filePath = Path.Combine(directoryPath, $"{entityName}.csv");
+43	
+44	            if (!File.Exists(filePath)) continue;
+45	
+46	            var dbSetProperty = _context.GetType().GetProperty(entityName + "s");
+47	            if (dbSetProperty == null) continue;
+48	
+49	            var dbSet = dbSetProperty.GetValue(_context);
+50	            
+51	            using var reader = new StreamReader(filePath);
+52	            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+53	            
+54	            var entityListType = typeof(List<>).MakeGenericType(entityType.ClrType);
+55	            var entities = (IList)Activator.CreateInstance(entityListType);
+56	
+57	            var records = csv.GetRecords(entityType.ClrType);
+58	            foreach (var record in records)
+59	            {
+60	                entities.Add(record);
+61	            }
+62	            
+63	            var addRangeMethod = dbSet.GetType().GetMethod("AddRange", new[] { typeof(IEnumerable<>).MakeGenericType(entityType.ClrType) });
+64	            if (addRangeMethod != null)
+65	            {
+66	                addRangeMethod.Invoke(dbSet, new object[] { entities });
+67	            }
+68	            
+69	            await _context.SaveChangesAsync();
+70	        }
+71	    }
+72	
+73	    public async Task<byte[]> DownloadAsZip(string directoryPath)
+74	    {
+75	        await SaveToCsv(directoryPath);
+76	
+77	        using var memoryStream = new MemoryStream();
+78	        using (var zipOutputStream = new ZipOutputStream(memoryStream))
+79	        {
+80	            zipOutputStream.SetLevel(3);
+81	
+82	            var csvFiles = Directory.GetFiles(directoryPath, "*.csv");
+83	            foreach (var filePath in csvFiles)
+84	            {
+85	                var entry = new ZipEntry(Path.GetFileName(filePath))
+86	                {
+87	                    DateTime = DateTime.Now,
+88	                    IsUnicodeText = true
+89	                };
+90	                zipOutputStream.PutNextEntry(entry);
+91	
+92	                using var fileStream = File.OpenRead(filePath);
+93	                fileStream.CopyTo(zipOutputStream);
+94	                zipOutputStream.CloseEntry();
+95	            }
+96	        }
+97	
+98	        return memoryStream.ToArray();
+99	    }
+100	}
