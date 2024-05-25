@@ -14,8 +14,7 @@ namespace StarOfLifeIoT
     {
         private readonly HttpClient _client = new HttpClient
         {
-            // TODO: add link here
-            BaseAddress = new Uri("")
+            BaseAddress = new Uri("http://localhost:5045/api")
         };
 
         public async Task Login(LoginDto dto)
