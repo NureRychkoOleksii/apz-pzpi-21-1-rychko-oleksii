@@ -65,12 +65,14 @@ public class ParentService : IParentService
             Gender = newbornDto.Gender,
         });
 
+        await _context.SaveChangesAsync();
+        
         _context.UserParents.Add(new UserParent
         {
             NewbornId = newborn.Entity.Id,
             ParentId = parent.Entity.Id
         });
-        
+
         await _context.SaveChangesAsync();
     }
 
@@ -114,7 +116,11 @@ public class ParentService : IParentService
         
         if (parent != null)
         {
-            return await _context.Newborns.Where(n => parent.UserParents.Any(up => up.NewbornId == n.Id)).ToListAsync();
+            var newbornIds = parent.UserParents.Select(up => up.NewbornId).ToList();
+            
+            return await _context.Newborns
+                .Where(n => newbornIds.Contains(n.Id))
+                .ToListAsync();
         }
 
         return null;

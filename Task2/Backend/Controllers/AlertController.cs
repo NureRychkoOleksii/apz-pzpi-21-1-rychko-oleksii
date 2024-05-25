@@ -37,7 +37,7 @@ public class AlertController : ControllerBase
         return Ok(alert);
     }
     
-    [HttpGet("patient/{id}")]
+    [HttpGet("newborn/{id}")]
     public async Task<ActionResult<Alert>> GetAlertByUser(int id)
     {
         var alerts = await _alertService.GetAlertsByUserAsync(id);

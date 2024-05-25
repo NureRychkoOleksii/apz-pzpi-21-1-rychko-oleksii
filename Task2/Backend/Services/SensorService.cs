@@ -39,7 +39,7 @@ public class SensorService : ISensorService
         {
             NewbornId = sensorDTO.NewbornId,
             SensorType = sensorDTO.SensorType,
-            SensorConfigurationId = sensorDTO.SensorSettingsId,
+            SensorSettingsId = sensorDTO.SensorSettingsId,
         });
 
         await _context.SaveChangesAsync();
@@ -61,7 +61,7 @@ public class SensorService : ISensorService
 
         sensorDb.NewbornId = sensorDTO.NewbornId;
         sensorDb.SensorType = sensorDTO.SensorType;
-        sensorDb.SensorConfigurationId = sensorDTO.SensorSettingsId;
+        sensorDb.SensorSettingsId = sensorDTO.SensorSettingsId;
 
         _context.Sensors.Update(sensorDb);
 

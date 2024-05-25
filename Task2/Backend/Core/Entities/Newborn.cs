@@ -8,12 +8,8 @@ public class Newborn : BaseEntity
     public string Name { get; set; }
     public DateTime DateOfBirth { get; set; }
     public Gender Gender { get; set; }
-
-    // TODO: change if not working
-    public User User { get; set; } = new User()
-    {
-        Role = Role.Newborn
-    };
+    
+    public User User { get; set; }
 
     public ICollection<UserParent> UserParents;
 }
