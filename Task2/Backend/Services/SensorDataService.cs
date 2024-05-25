@@ -21,7 +21,6 @@ public class SensorDataService : ISensorDataService
         var medicalDatas = await _context.MedicalDatas
             .Include(md => md.Sensor)
             .ToListAsync();
-        
         foreach (SensorType sensorType in Enum.GetValues(typeof(SensorType)))
         {
             averageData[sensorType] = 0;
