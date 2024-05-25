@@ -80,7 +80,7 @@ public class MedicalDataController : ControllerBase
                         TimeAlerted = DateTime.Now
                     });
                 }
-                else if (medicalDataDTO.SensorData > sensor.SensorSettings.LowEdgeThreshold)
+                else if (medicalDataDTO.SensorData < sensor.SensorSettings.LowEdgeThreshold)
                 {
                     await _alertService.CreateAlertAsync(new CreateAlertDTO
                     {
