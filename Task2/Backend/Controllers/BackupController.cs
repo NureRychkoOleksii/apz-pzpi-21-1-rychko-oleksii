@@ -22,6 +22,7 @@ public class BackupController : ControllerBase
     public async Task<IActionResult> SaveToCsv()
     {
         string relativeDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backups");
+        Console.WriteLine(relativeDirectoryPath);
         Directory.CreateDirectory(relativeDirectoryPath);
 
         await _backupService.SaveToCsv(relativeDirectoryPath);
@@ -34,6 +35,7 @@ public class BackupController : ControllerBase
     public async Task<IActionResult> RestoreFromCsv()
     {
         string relativeDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backups");
+        Console.WriteLine(relativeDirectoryPath);
         
         if (!Directory.Exists(relativeDirectoryPath))
         {
