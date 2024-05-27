@@ -100,10 +100,16 @@
         <Compile Include="Types\LoginDto.cs" />
         <Compile Include="Types\MedicalDataDto.cs" />
         <Compile Include="Types\SensorSettings.cs" />
+        <Compile Include="Types\Settings.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="App.config" />
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="settings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

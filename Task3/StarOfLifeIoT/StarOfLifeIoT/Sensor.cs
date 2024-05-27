@@ -12,23 +12,32 @@ namespace StarOfLifeIoT
 {
     public class Sensor
     {
-        private readonly HttpClient _client = new HttpClient
+        private readonly HttpClient _client;
+        private readonly string _loginEndpoint;
+        private readonly string _sensorSettingsEndpoint;
+        private readonly string _medicalDataEndpoint;
+
+        public Sensor(string url, string loginEndpoint, string sensorSettingsEndpoint, string medicalDataEndpoint)
         {
-            BaseAddress = new Uri("http://localhost:5045/api")
-        };
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(url)
+            };
+            _loginEndpoint = loginEndpoint;
+            _sensorSettingsEndpoint = sensorSettingsEndpoint;
+            _medicalDataEndpoint = medicalDataEndpoint;
+        }
 
         public async Task Login(LoginDto dto)
         {
             string jsonBody = JsonConvert.SerializeObject(dto);
             var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
-            var loginResponse = await _client.PostAsync("/user/login", content);
+            var loginResponse = await _client.PostAsync(_loginEndpoint, content);
             
             loginResponse.EnsureSuccessStatusCode();
             
             var responseBody = await loginResponse.Content.ReadAsStringAsync();
-            
-            Console.WriteLine(responseBody);
             
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseBody);
         }
@@ -43,7 +52,7 @@ namespace StarOfLifeIoT
             {
                 var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
-                var response = await _client.PostAsync("/MedicalData/", content);
+                var response = await _client.PostAsync(_medicalDataEndpoint, content);
                 
                 response.EnsureSuccessStatusCode();
                 
@@ -54,7 +63,7 @@ namespace StarOfLifeIoT
 
         public async Task<SensorSettings> GetSensorSettings(int sensorSettingsId)
         {
-            var configResponse = await _client.GetAsync("/SensorSettings" + sensorSettingsId);
+            var configResponse = await _client.GetAsync(_sensorSettingsEndpoint + sensorSettingsId);
             
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             
