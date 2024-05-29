@@ -1,13 +1,12 @@
 "use client";
 
-import { Box, Flex, Link, Spacer, Heading, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Spacer, Heading, Button } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import useStore from "../store";
 
 const HeaderLogged = () => {
   const router = useRouter();
-  const logout = useStore((state) => state.clearToken);
+  const logout = () => localStorage.removeItem("token");
 
   const handleLogout = () => {
     logout();
@@ -24,9 +23,9 @@ const HeaderLogged = () => {
         </NextLink>
         <Spacer />
         <NextLink href="/parents/newborns" passHref>
-          <Link mr={4} color="white" fontWeight="bold">
+          <Text mr={4} color="white" fontWeight="bold">
             Check Newborns
-          </Link>
+          </Text>
         </NextLink>
         <Button onClick={handleLogout} colorScheme="red" variant="solid">
           Logout

@@ -1,4 +1,4 @@
-import { Box, Flex, Link, Spacer, Heading } from "@chakra-ui/react";
+import { Box, Flex, Text, Spacer, Heading } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 const HeaderNotLogged = () => {
@@ -12,14 +12,14 @@ const HeaderNotLogged = () => {
         </NextLink>
         <Spacer />
         <NextLink href="/signup" passHref>
-          <Link mr={4} color="white" fontWeight="bold">
+          <Text mr={4} color="white" fontWeight="bold">
             Sign Up
-          </Link>
+          </Text>
         </NextLink>
         <NextLink href="/login" passHref>
-          <Link color="white" fontWeight="bold">
+          <Text color="white" fontWeight="bold">
             Log In
-          </Link>
+          </Text>
         </NextLink>
       </Flex>
     </Box>

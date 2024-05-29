@@ -13,12 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/utils/axios-instance";
-import useAuthStore from "@/store";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setToken } = useAuthStore();
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -29,7 +27,7 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        setToken(response.data.token);
+        localStorage.setItem("token", response.data);
         router.push("/");
       } else {
         console.error("Login failed");
@@ -44,8 +42,8 @@ const Login = () => {
       <VStack spacing={4} align="flex-start">
         <Heading>Login</Heading>
         <Text>Welcome back to StarOfLife. Please log in to your account.</Text>
-        <FormControl id="email" isRequired>
-          <FormLabel>Email address</FormLabel>
+        <FormControl id="username" isRequired>
+          <FormLabel>Username</FormLabel>
           <Input
             type="text"
             value={username}

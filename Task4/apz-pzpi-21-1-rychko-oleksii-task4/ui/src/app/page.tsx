@@ -1,12 +1,12 @@
 "use client";
 
-import useAuthStore from "@/store";
 import { VStack, Heading, Button, Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const isLoggedIn = useAuthStore((state) => state.token);
+  const token = localStorage.getItem("token");
+
   const handleGetStarted = () => {
     router.push("/login");
   };
@@ -15,7 +15,7 @@ export default function Home() {
     <Box p={6} textAlign="center">
       <VStack spacing={6}>
         <Heading size="2xl">Welcome to StarOfLife</Heading>
-        {isLoggedIn !== null ? (
+        {token ? (
           <>
             <Text fontSize="xl">
               Your trusted partner in monitoring and ensuring the health of
