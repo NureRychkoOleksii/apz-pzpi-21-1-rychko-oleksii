@@ -201,7 +201,7 @@ const SensorSettingsManagement = () => {
                     gap: "5px",
                   }}
                 >
-                  {/* TODO: add backup + getting newborns for parents + statistics */}
+                  {/* TODO: getting newborns for parents + statistics */}
                   <Button
                     colorScheme="green"
                     onClick={() =>
