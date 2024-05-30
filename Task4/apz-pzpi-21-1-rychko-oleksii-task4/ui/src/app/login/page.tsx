@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/utils/axios-instance";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -28,6 +29,14 @@ const Login = () => {
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data);
+        const decodedToken = jwtDecode(response.data) as any;
+        localStorage.setItem(
+          "id",
+          decodedToken[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+          ]
+        );
+        window.dispatchEvent(new Event("storage"));
         router.push("/");
       } else {
         console.error("Login failed");

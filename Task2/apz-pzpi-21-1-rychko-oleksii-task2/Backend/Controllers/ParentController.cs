@@ -38,6 +38,25 @@ public class ParentController : ControllerBase
         }
         return Ok(parent);
     }
+    
+    [HttpGet("/api/parent-user/{id}")]
+    public async Task<ActionResult<Parent>> GetParentByUserId(int id)
+    {
+        var parents = await _parentService.GetParents();
+        if (parents == null)
+        {
+            return NotFound();
+        }
+
+        var parentUser = parents.FirstOrDefault(p => p.UserId == id);
+
+        if (parentUser == null)
+        {
+            return NotFound();
+        }
+        
+        return Ok(parentUser);
+    }
 
     [HttpPost]
     [DoctorRoleInterceptor]
@@ -90,7 +109,6 @@ public class ParentController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [DoctorRoleInterceptor]
     public async Task<IActionResult> UpdateParent(int id, [FromBody] UpdateParentDTO parent)
     {
         try

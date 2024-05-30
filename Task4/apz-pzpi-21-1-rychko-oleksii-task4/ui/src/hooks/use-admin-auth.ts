@@ -9,7 +9,8 @@ export const useAdminAuth = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (token) {
+    console.log({ token });
+    if (token !== null) {
       const decodedToken = jwtDecode(token);
       if (
         (decodedToken as any)[

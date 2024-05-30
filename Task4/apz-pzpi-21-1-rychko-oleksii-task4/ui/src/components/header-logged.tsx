@@ -10,6 +10,7 @@ const HeaderLogged = () => {
 
   const handleLogout = () => {
     logout();
+    window.dispatchEvent(new Event("storage"));
     router.push("/login");
   };
 
