@@ -134,13 +134,19 @@ const SensorManagement: React.FC = () => {
                 <Td>{sensor.id}</Td>
                 <Td>{sensor.newbornId}</Td>
                 <Td>{sensor.sensorSettingsId}</Td>
-                <Td>
+                <Td
+                  style={{
+                    display: "flex",
+                    gap: "5px",
+                  }}
+                >
                   <Button
                     colorScheme="green"
                     onClick={() => router.push(`/admin/sensors/${sensor.id}`)}
                   >
                     Edit Sensor
                   </Button>
+
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(sensor.id)}

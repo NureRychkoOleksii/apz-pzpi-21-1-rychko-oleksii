@@ -14,14 +14,20 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
-        <ChakraProvider>
+      <ChakraProvider>
+        <body>
           <>
             {token ? <HeaderLogged /> : <HeaderNotLogged />}
-            <main>{children}</main>
+            <main
+              style={{
+                padding: "30px",
+              }}
+            >
+              {children}
+            </main>
           </>
-        </ChakraProvider>
-      </body>
+        </body>
+      </ChakraProvider>
     </html>
   );
 }

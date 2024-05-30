@@ -49,6 +49,7 @@ const SensorSettingsManagement = () => {
       try {
         const response = await axiosInstance.get("/SensorSettings");
         setSensorSettings(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching sensor settings:", error);
         toast({
@@ -68,7 +69,7 @@ const SensorSettingsManagement = () => {
       await axiosInstance.delete(`/SensorSettings/${id}`);
       setSensorSettings(sensorSettings.filter((sensor) => sensor.id !== id));
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error deleting sensor settings:", error);
     }
   };
 
@@ -84,7 +85,7 @@ const SensorSettingsManagement = () => {
         isActive: false,
       });
     } catch (error) {
-      console.error("Error adding sensor:", error);
+      console.error("Error adding sensor settings:", error);
     }
   };
 
@@ -125,7 +126,7 @@ const SensorSettingsManagement = () => {
           mb={2}
         />
         <Input
-          placeholder="Low critical threshold"
+          placeholder="Low edge threshold"
           value={newSensorSettings.lowEdgeThreshold}
           onChange={(e) =>
             setNewSensorSettings({
@@ -149,7 +150,7 @@ const SensorSettingsManagement = () => {
         <Checkbox
           size="md"
           colorScheme="green"
-          checked={newSensorSettings.isActive}
+          isChecked={newSensorSettings.isActive}
           onChange={() =>
             setNewSensorSettings({
               ...newSensorSettings,
@@ -173,6 +174,7 @@ const SensorSettingsManagement = () => {
               <Th>Low Critical Threshold</Th>
               <Th>Low Edge Threshold</Th>
               <Th>Sampling Frequency</Th>
+              <Th>Is active</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
@@ -186,6 +188,28 @@ const SensorSettingsManagement = () => {
                 <Td>{setting.lowEdgeThreshold}</Td>
                 <Td>{setting.samplingFrequency}</Td>
                 <Td>
+                  <Checkbox
+                    size="md"
+                    colorScheme="green"
+                    isChecked={setting.isActive}
+                    disabled
+                  />
+                </Td>
+                <Td
+                  style={{
+                    display: "flex",
+                    gap: "5px",
+                  }}
+                >
+                  {/* TODO: add backup + getting newborns for parents + statistics */}
+                  <Button
+                    colorScheme="green"
+                    onClick={() =>
+                      router.push(`/admin/sensor-settings/${setting.id}`)
+                    }
+                  >
+                    Edit Sensor Settings
+                  </Button>
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(setting.id)}

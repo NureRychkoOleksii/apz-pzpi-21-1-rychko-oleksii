@@ -150,7 +150,12 @@ const UserManagement: React.FC = () => {
                 <Td>{user.id}</Td>
                 <Td>{user.username}</Td>
                 <Td>{user.email}</Td>
-                <Td>
+                <Td
+                  style={{
+                    display: "flex",
+                    gap: "5px",
+                  }}
+                >
                   <Button
                     colorScheme="green"
                     onClick={() => handleEditUser(user.id)}
