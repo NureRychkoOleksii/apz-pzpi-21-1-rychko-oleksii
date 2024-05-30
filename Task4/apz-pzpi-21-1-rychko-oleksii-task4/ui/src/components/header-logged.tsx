@@ -3,6 +3,8 @@
 import { Box, Flex, Text, Spacer, Heading, Button } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
+import { LanguagePicker } from "./language-picker";
+import { useTranslation } from "react-i18next";
 
 const HeaderLogged = () => {
   const router = useRouter();
@@ -14,6 +16,8 @@ const HeaderLogged = () => {
     router.push("/login");
   };
 
+  const { t } = useTranslation();
+
   return (
     <Box bg="teal.500" p={15}>
       <Flex alignItems="center">
@@ -23,14 +27,10 @@ const HeaderLogged = () => {
           </Heading>
         </NextLink>
         <Spacer />
-        <NextLink href="/parents/newborns" passHref>
-          <Text mr={4} color="white" fontWeight="bold">
-            Check Newborns
-          </Text>
-        </NextLink>
-        <Button onClick={handleLogout} colorScheme="red" variant="solid">
-          Logout
+        <Button onClick={handleLogout} colorScheme="red" variant="solid" mr={4}>
+          {t("logout")}
         </Button>
+        <LanguagePicker />
       </Flex>
     </Box>
   );
