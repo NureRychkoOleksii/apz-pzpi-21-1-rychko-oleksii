@@ -76,7 +76,20 @@ builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 builder.Services.AddScoped<IAlertService, AlertService>();
 builder.Services.AddScoped<ISensorDataService, SensorDataService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
 
 if (app.Environment.IsDevelopment())
 {
