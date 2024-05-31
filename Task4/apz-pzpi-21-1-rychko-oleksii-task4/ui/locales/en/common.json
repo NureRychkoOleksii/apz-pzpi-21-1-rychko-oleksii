@@ -1,4 +1,5 @@
 {
+  "welcome-main": "Welcome to StarOfLife",
   "partners": "Your trusted partner in monitoring and ensuring the health of newborns.",
   "get-started": "Get started",
   "see-your-info": "To see your info, go to:",
@@ -44,5 +45,9 @@
   "users": "Users",
   "sensors": "Sensors",
   "log-in": "Log in",
-  "logout": "Logout"
+  "logout": "Logout",
+  "sensor": "Sensor",
+  "data": "Data",
+  "date": "Date",
+  "backup-management": "Backup management"
 }

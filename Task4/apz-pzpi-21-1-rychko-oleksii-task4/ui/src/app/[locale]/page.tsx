@@ -31,7 +31,7 @@ function Home() {
   return (
     <Box p={6} textAlign="center">
       <VStack spacing={6}>
-        <Heading size="2xl">Welcome to StarOfLife</Heading>
+        <Heading size="2xl">{t("welcome-main")}</Heading>
         {!token ? (
           <>
             <Text fontSize="xl">{t("partners")}</Text>
