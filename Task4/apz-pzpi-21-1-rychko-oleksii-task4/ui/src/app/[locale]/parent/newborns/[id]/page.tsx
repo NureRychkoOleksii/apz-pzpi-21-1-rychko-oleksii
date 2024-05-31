@@ -8,6 +8,13 @@ import {
   Heading,
   Spinner,
   useToast,
+  Button,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import {
   LineChart,
@@ -23,6 +30,7 @@ import axiosInstance from "@/utils/axios-instance";
 import moment from "moment";
 import { SensorType } from "@/components/management/sensor-management";
 import { useTranslation } from "react-i18next";
+import router from "next/router";
 
 interface MedicalData {
   timeSaved: string;
@@ -108,6 +116,24 @@ const NewbornStatistics = ({ params }: { params: { id: number } }) => {
           <Spinner />
         )}
       </Box>
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>{t("sensor")}</Th>
+            <Th>{t("data")}</Th>
+            <Th>{t("date")}</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {allData.map((data, i) => (
+            <Tr key={i}>
+              <Td>{SensorType[data.sensor]}</Td>
+              <Td>{data.data}</Td>
+              <Td>{data.timeSaved}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     </VStack>
   );
 };

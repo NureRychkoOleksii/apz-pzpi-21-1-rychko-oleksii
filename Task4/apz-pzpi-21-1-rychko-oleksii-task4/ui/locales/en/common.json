@@ -44,5 +44,8 @@
   "users": "Users",
   "sensors": "Sensors",
   "log-in": "Log in",
-  "logout": "Logout"
+  "logout": "Logout",
+  "sensor": "Sensor",
+  "data": "Data",
+  "date": "Date"
 }
