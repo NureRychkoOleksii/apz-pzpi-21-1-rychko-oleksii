@@ -99,7 +99,6 @@ const SensorManagement: React.FC = () => {
         />
         <Select
           placeholder="Select Type"
-          value={newSensor.sensorType}
           onChange={(e) => {
             setNewSensor({
               ...newSensor,

@@ -111,7 +111,6 @@ const UserManagement: React.FC = () => {
         />
         <Select
           placeholder="Select Role"
-          value={newUser.role}
           onChange={(e) => {
             setNewUser({
               ...newUser,

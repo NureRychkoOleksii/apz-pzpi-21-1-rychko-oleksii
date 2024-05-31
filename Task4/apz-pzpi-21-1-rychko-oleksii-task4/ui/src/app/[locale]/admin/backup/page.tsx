@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import BackupManagement from "./backup-management";
 import { useTranslation } from "react-i18next";
