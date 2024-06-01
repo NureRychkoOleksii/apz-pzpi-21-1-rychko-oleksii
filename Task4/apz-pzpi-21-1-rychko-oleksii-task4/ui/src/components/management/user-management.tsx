@@ -15,6 +15,7 @@ import {
 import { useRouter } from "next/navigation";
 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface User {
   id: number;
@@ -45,6 +46,7 @@ const UserManagement: React.FC = () => {
     role: Role.Parent.toString(),
   });
 
+  const { t } = useTranslation();
   const router = useRouter();
 
   useEffect(() => {
@@ -92,25 +94,25 @@ const UserManagement: React.FC = () => {
     <VStack spacing={4} align="stretch">
       <Box>
         <Input
-          placeholder="Username"
+          placeholder={t("username")}
           value={newUser.username}
           onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
           mb={2}
         />
         <Input
-          placeholder="Password"
+          placeholder={t("password")}
           value={newUser.password}
           onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
           mb={2}
         />
         <Input
-          placeholder="Email"
+          placeholder={t("email")}
           value={newUser.email}
           onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
           mb={2}
         />
         <Select
-          placeholder="Select Role"
+          placeholder={t("select-role")}
           onChange={(e) => {
             setNewUser({
               ...newUser,
@@ -132,15 +134,15 @@ const UserManagement: React.FC = () => {
           mb={4}
           onClick={async () => await handleAddUser()}
         >
-          Add New User
+          {t("add-new-user")}
         </Button>
         <Table variant="simple">
           <Thead>
             <Tr>
               <Th>ID</Th>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Actions</Th>
+              <Th>{t("name")}</Th>
+              <Th>{t("email")}</Th>
+              <Th>{t("actions")}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -159,13 +161,13 @@ const UserManagement: React.FC = () => {
                     colorScheme="green"
                     onClick={() => handleEditUser(user.id)}
                   >
-                    Edit User
+                    {t("edit-user")}
                   </Button>
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(user.id)}
                   >
-                    Delete
+                    {t("delete")}
                   </Button>
                 </Td>
               </Tr>
