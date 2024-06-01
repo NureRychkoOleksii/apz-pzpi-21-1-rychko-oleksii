@@ -49,5 +49,13 @@
   "sensor": "Sensor",
   "data": "Data",
   "date": "Date",
-  "backup-management": "Backup management"
+  "backup-management": "Backup management",
+  "add-new-user": "Add new user",
+  "edit-user": "Edit user",
+  "delete": "Delete",
+  "select-type": "Select type",
+  "add-new-sensor": "Add new sensor",
+  "add-new-sensor-settings": "Add new sensor settings",
+  "edit-sensor": "Edit sensor",
+  "edit-sensor-settings": "Edit sensor settings"
 }

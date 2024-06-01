@@ -32,7 +32,7 @@
   "high-edge-threshold": "Верхній пороговий рівень",
   "low-critical-threshold": "Нижній критичний поріг",
   "low-edge-threshold": "Нижній пороговий рівень",
-  "sampling-frequency": "Частота дискретизації",
+  "sampling-frequency": "Частота зчитування",
   "is-active": "Активний",
   "save-sensor-settings": "Зберегти налаштування датчика",
   "newborn-id": "Ідентифікатор новонародженого",
@@ -49,5 +49,13 @@
   "sensor": "Датчик",
   "data": "Дані",
   "date": "Дата",
-  "backup-management": "Backup management"
+  "backup-management": "Резервні дані",
+  "add-new-user": "Додати нового користувача",
+  "edit-user": "Змінити користувача",
+  "delete": "Видалити",
+  "select-type": "Вибрати тип",
+  "add-new-sensor": "Створити новий сенсор",
+  "add-new-sensor-settings": "Створити нові налаштування датчику",
+  "edit-sensor": "Змінити сенсор",
+  "edit-sensor-settings": "Змінити налаштування сенсору"
 }

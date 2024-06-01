@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import axiosInstance from "@/utils/axios-instance";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export interface SensorSettings {
   id: number;
@@ -41,6 +42,8 @@ const SensorSettingsManagement = () => {
     isActive: false,
   });
 
+  const { t } = useTranslation();
+
   const router = useRouter();
   const toast = useToast();
 
@@ -53,8 +56,7 @@ const SensorSettingsManagement = () => {
       } catch (error) {
         console.error("Error fetching sensor settings:", error);
         toast({
-          title: "Error",
-          description: "Failed to fetch sensor settings.",
+          title: t("error"),
           status: "error",
           duration: 5000,
         });
@@ -62,7 +64,7 @@ const SensorSettingsManagement = () => {
     };
 
     fetchSensorSettings();
-  }, [toast]);
+  }, [t, toast]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -93,7 +95,7 @@ const SensorSettingsManagement = () => {
     <VStack spacing={4} align="stretch">
       <Box>
         <Input
-          placeholder="High critical threshold"
+          placeholder={t("high-critical-threshold")}
           value={newSensorSettings.highCriticalThreshold}
           onChange={(e) =>
             setNewSensorSettings({
@@ -104,7 +106,7 @@ const SensorSettingsManagement = () => {
           mb={2}
         />
         <Input
-          placeholder="High edge threshold"
+          placeholder={t("high-edge-threshold")}
           value={newSensorSettings.highEdgeThreshold}
           onChange={(e) =>
             setNewSensorSettings({
@@ -115,7 +117,7 @@ const SensorSettingsManagement = () => {
           mb={2}
         />
         <Input
-          placeholder="Low critical threshold"
+          placeholder={t("low-critical-threshold")}
           value={newSensorSettings.lowCriticalThreshold}
           onChange={(e) =>
             setNewSensorSettings({
@@ -126,7 +128,7 @@ const SensorSettingsManagement = () => {
           mb={2}
         />
         <Input
-          placeholder="Low edge threshold"
+          placeholder={t("low-edge-threshold")}
           value={newSensorSettings.lowEdgeThreshold}
           onChange={(e) =>
             setNewSensorSettings({
@@ -137,7 +139,7 @@ const SensorSettingsManagement = () => {
           mb={2}
         />
         <Input
-          placeholder="Sampling frequency"
+          placeholder={t("sampling-frequency")}
           value={newSensorSettings.samplingFrequency}
           onChange={(e) =>
             setNewSensorSettings({
@@ -158,24 +160,24 @@ const SensorSettingsManagement = () => {
             })
           }
         >
-          Is active
+          {t("is-active")}
         </Checkbox>
         <br />
         <br />
         <Button colorScheme="blue" mb={4} onClick={handleAddSettings}>
-          Add New Sensor Setting
+          {t("add-new-sensor-settings")}
         </Button>
         <Table variant="simple">
           <Thead>
             <Tr>
               <Th>ID</Th>
-              <Th>High Critical Threshold</Th>
-              <Th>High Edge Threshold</Th>
-              <Th>Low Critical Threshold</Th>
-              <Th>Low Edge Threshold</Th>
-              <Th>Sampling Frequency</Th>
-              <Th>Is active</Th>
-              <Th>Actions</Th>
+              <Th>{t("high-critical-threshold")}</Th>
+              <Th>{t("high-edge-threshold")}</Th>
+              <Th>{t("low-critical-threshold")}</Th>
+              <Th>{t("low-edge-threshold")}</Th>
+              <Th>{t("sampling-frequency")}</Th>
+              <Th>{t("is-active")}</Th>
+              <Th>{t("actions")}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -208,13 +210,13 @@ const SensorSettingsManagement = () => {
                       router.push(`/admin/sensor-settings/${setting.id}`)
                     }
                   >
-                    Edit Sensor Settings
+                    {t("edit-sensor-settings")}
                   </Button>
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(setting.id)}
                   >
-                    Delete
+                    {t("delete")}
                   </Button>
                 </Td>
               </Tr>

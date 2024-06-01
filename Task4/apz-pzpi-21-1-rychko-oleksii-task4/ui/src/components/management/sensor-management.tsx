@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import axiosInstance from "@/utils/axios-instance";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 export interface Sensor {
   id: number;
@@ -37,6 +38,8 @@ const SensorManagement: React.FC = () => {
     sensorType: string;
     sensorSettingsId: number;
   }>({ newbornId: 0, sensorType: "", sensorSettingsId: 0 });
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchSensors = async () => {
@@ -79,7 +82,7 @@ const SensorManagement: React.FC = () => {
     <VStack spacing={4} align="stretch">
       <Box>
         <Input
-          placeholder="Newborn Id"
+          placeholder={t("newborn-id")}
           value={newSensor.newbornId}
           onChange={(e) =>
             setNewSensor({ ...newSensor, newbornId: e.target.value as any })
@@ -87,7 +90,7 @@ const SensorManagement: React.FC = () => {
           mb={2}
         />
         <Input
-          placeholder="Sensor settings ID"
+          placeholder={t("sensor-settings-id")}
           value={newSensor.sensorSettingsId}
           onChange={(e) =>
             setNewSensor({
@@ -98,7 +101,7 @@ const SensorManagement: React.FC = () => {
           mb={2}
         />
         <Select
-          placeholder="Select Type"
+          placeholder={t("select-type")}
           onChange={(e) => {
             setNewSensor({
               ...newSensor,
@@ -116,15 +119,15 @@ const SensorManagement: React.FC = () => {
             ))}
         </Select>
         <Button colorScheme="blue" onClick={handleAddSensor} mb={4}>
-          Add New Sensor
+          {t("add-new-sensor")}
         </Button>
         <Table variant="simple">
           <Thead>
             <Tr>
               <Th>ID</Th>
-              <Th>Newborn ID</Th>
-              <Th>Settings Id</Th>
-              <Th>Actions</Th>
+              <Th>{t("newborn-id")}</Th>
+              <Th>{t("sensor-settings-id")}</Th>
+              <Th>{t("actions")}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -143,14 +146,14 @@ const SensorManagement: React.FC = () => {
                     colorScheme="green"
                     onClick={() => router.push(`/admin/sensors/${sensor.id}`)}
                   >
-                    Edit Sensor
+                    {t("edit-sensor")}
                   </Button>
 
                   <Button
                     colorScheme="red"
                     onClick={() => handleDelete(sensor.id)}
                   >
-                    Delete
+                    {t("delete")}
                   </Button>
                 </Td>
               </Tr>
